@@ -13,6 +13,7 @@ import { AddSessionModal } from './components/AddSessionModal';
 import { ClassGuideModal } from './components/ClassGuideModal';
 import { QrCodeModal } from './components/QrCodeModal';
 import { DeletePatientModal } from './components/DeletePatientModal';
+import { LoginPage } from './components/LoginPage';
 import { calcUsiaKehamilan, getRiskAnalysis } from './utils/calculator';
 import { exportToCsv } from './utils/exportCsv';
 import { Heart, Info, AlertTriangle, Sparkles, Check } from 'lucide-react';
@@ -22,6 +23,28 @@ const STORAGE_KEY_PATIENTS = 'ingek_bundo_patients_v2';
 const STORAGE_KEY_SESSIONS = 'ingek_bundo_sessions_v3';
 
 export default function App() {
+  // Authentication state
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    try {
+      const local = localStorage.getItem('ingek_bundo_auth');
+      const session = sessionStorage.getItem('ingek_bundo_auth');
+      return !!(local || session);
+    } catch {
+      return false;
+    }
+  });
+
+  const [currentUser, setCurrentUser] = useState<string>(() => {
+    try {
+      const raw = localStorage.getItem('ingek_bundo_auth') || sessionStorage.getItem('ingek_bundo_auth');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        return parsed.user || 'kuranji';
+      }
+    } catch {}
+    return 'kuranji';
+  });
+
   // Pustu list
   const [pustuList] = useState<Pustu[]>(INITIAL_PUSTU);
   const [activePustuId, setActivePustuId] = useState<string>('korong-gadang');
@@ -348,7 +371,7 @@ export default function App() {
     showToast('✓ Rekapitulasi CSV berhasil diunduh.');
   };
 
-  // Update clinical notes handler
+  // Clinical notes handler
   const handleUpdateNotes = (patientId: number, notes: string) => {
     setPatients((prev) =>
       prev.map((pt) => {
@@ -363,6 +386,28 @@ export default function App() {
     }
   };
 
+  // Auth handlers
+  const handleLoginSuccess = (user: string) => {
+    setIsAuthenticated(true);
+    setCurrentUser(user);
+    showToast(`✓ Berhasil masuk sebagai @${user}`);
+  };
+
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem('ingek_bundo_auth');
+      sessionStorage.removeItem('ingek_bundo_auth');
+    } catch (e) {
+      console.error('Failed to logout', e);
+    }
+    setIsAuthenticated(false);
+  };
+
+  // If not authenticated, display the Login Page
+  if (!isAuthenticated) {
+    return <LoginPage onLoginSuccess={handleLoginSuccess} />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-[#FFF5F7] text-[#21352D]">
       {/* Top Navigation Header */}
@@ -371,6 +416,8 @@ export default function App() {
         onOpenGuideModal={() => setIsGuideModalOpen(true)}
         onOpenQrModal={() => setIsQrModalOpen(true)}
         onExportCsv={handleExportCsv}
+        onLogout={handleLogout}
+        currentUser={currentUser}
       />
 
       {/* Main Content Area */}

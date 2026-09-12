@@ -3,6 +3,4 @@
   "description": "Sistem pendataan, pelacakan kehadiran, dan pemantauan risiko tinggi kelas ibu hamil Puskesmas Kuranji dengan skema warna ceria khas logo Ingek Bundo.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}export default defineConfig({
-  base: '/ingekbundo-prog/',
-})
+}

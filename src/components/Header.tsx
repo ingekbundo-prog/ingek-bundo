@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, BookOpen, Download, Heart, QrCode } from 'lucide-react';
+import { Plus, BookOpen, Download, Heart, QrCode, LogOut, UserCheck } from 'lucide-react';
 import { LogoBadge } from './LogoBadge';
 
 interface HeaderProps {
@@ -7,6 +7,8 @@ interface HeaderProps {
   onOpenGuideModal: () => void;
   onOpenQrModal: () => void;
   onExportCsv: () => void;
+  onLogout?: () => void;
+  currentUser?: string;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -14,6 +16,8 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenGuideModal,
   onOpenQrModal,
   onExportCsv,
+  onLogout,
+  currentUser = 'kuranji',
 }) => {
   return (
     <header className="bg-white/90 backdrop-blur-md border-b border-[#F9D5E2] sticky top-0 z-30 shadow-xs">
@@ -26,7 +30,7 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
 
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="text-2xl sm:text-3xl font-extrabold tracking-wide flex items-center gap-1 font-heading">
                   <span className="text-[#E62E76] drop-shadow-xs">INGEK</span>
                   <span className="text-[#15805D] flex items-center">
@@ -36,6 +40,10 @@ export const Header: React.FC<HeaderProps> = ({
                 </h1>
                 <span className="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#DCFCE7] text-[#15805D] border border-[#86EFAC]/50">
                   Puskesmas Kuranji
+                </span>
+                <span className="hidden lg:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#FFF0F5] text-[#BE123C] border border-[#F9D5E2]">
+                  <UserCheck size={12} />
+                  <span>@{currentUser}</span>
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-gray-600 font-medium mt-0.5">
@@ -79,6 +87,17 @@ export const Header: React.FC<HeaderProps> = ({
               <Plus size={18} strokeWidth={2.5} />
               <span>Ibu Hamil Baru</span>
             </button>
+
+            {onLogout && (
+              <button
+                onClick={onLogout}
+                className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold rounded-xl bg-white border border-rose-200 text-rose-600 hover:bg-rose-50 hover:border-rose-300 transition-all cursor-pointer shadow-xs active:scale-95"
+                title="Keluar dari sistem"
+              >
+                <LogOut size={16} />
+                <span className="hidden sm:inline">Keluar</span>
+              </button>
+            )}
           </div>
         </div>
       </div>
