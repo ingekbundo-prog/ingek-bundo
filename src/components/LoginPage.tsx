@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { LogoBadge } from './LogoBadge';
+import { SpecialThanksModal } from './SpecialThanksModal';
 import { Lock, User, Eye, EyeOff, ShieldCheck, Heart, ArrowRight } from 'lucide-react';
 
 interface LoginPageProps {
@@ -13,6 +14,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
   const [rememberMe, setRememberMe] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isThanksModalOpen, setIsThanksModalOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,7 +71,15 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
                 <span className="text-[#E62E76] drop-shadow-xs">INGEK</span>
                 <span className="text-[#15805D] flex items-center">
                   BUNDO
-                  <Heart size={18} className="inline ml-1 fill-[#E62E76] text-[#E62E76] animate-pulse" />
+                  <button
+                    type="button"
+                    onClick={() => setIsThanksModalOpen(true)}
+                    className="inline-flex items-center p-1 -m-1 rounded-full hover:bg-pink-100/60 transition-transform active:scale-90 cursor-pointer"
+                    title="Klik untuk melihat pesan rahasia"
+                    aria-label="Pesan Terima Kasih"
+                  >
+                    <Heart size={18} className="fill-[#E62E76] text-[#E62E76] animate-pulse hover:scale-125 transition-transform" />
+                  </button>
                 </span>
               </h1>
               <p className="text-xs sm:text-sm font-semibold text-gray-700 mt-1">
@@ -188,6 +198,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
       <footer className="w-full max-w-md pb-4 text-center text-xs text-gray-600 font-medium">
         &copy; {new Date().getFullYear()} Ingek Bundo · Puskesmas Kuranji Kota Padang
       </footer>
+
+      {/* Special Thanks Popup Modal */}
+      <SpecialThanksModal
+        isOpen={isThanksModalOpen}
+        onClose={() => setIsThanksModalOpen(false)}
+      />
     </div>
   );
 };

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Plus, BookOpen, Download, Heart, QrCode, LogOut, UserCheck } from 'lucide-react';
 import { LogoBadge } from './LogoBadge';
+import { SpecialThanksModal } from './SpecialThanksModal';
 
 interface HeaderProps {
   onOpenAddModal: () => void;
@@ -19,6 +20,8 @@ export const Header: React.FC<HeaderProps> = ({
   onLogout,
   currentUser = 'kuranji',
 }) => {
+  const [isThanksModalOpen, setIsThanksModalOpen] = useState(false);
+
   return (
     <header className="bg-white/90 backdrop-blur-md border-b border-[#F9D5E2] sticky top-0 z-30 shadow-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
@@ -35,7 +38,15 @@ export const Header: React.FC<HeaderProps> = ({
                   <span className="text-[#E62E76] drop-shadow-xs">INGEK</span>
                   <span className="text-[#15805D] flex items-center">
                     BUNDO
-                    <Heart size={16} className="inline ml-1 fill-[#E62E76] text-[#E62E76] animate-pulse" />
+                    <button
+                      type="button"
+                      onClick={() => setIsThanksModalOpen(true)}
+                      className="inline-flex items-center p-1 -m-1 rounded-full hover:bg-pink-100/60 transition-transform active:scale-90 cursor-pointer"
+                      title="Klik untuk melihat pesan rahasia"
+                      aria-label="Pesan Terima Kasih"
+                    >
+                      <Heart size={18} className="fill-[#E62E76] text-[#E62E76] animate-pulse hover:scale-125 transition-transform" />
+                    </button>
                   </span>
                 </h1>
                 <span className="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#DCFCE7] text-[#15805D] border border-[#86EFAC]/50">
@@ -101,6 +112,12 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Special Thanks Popup Modal */}
+      <SpecialThanksModal
+        isOpen={isThanksModalOpen}
+        onClose={() => setIsThanksModalOpen(false)}
+      />
     </header>
   );
 };
