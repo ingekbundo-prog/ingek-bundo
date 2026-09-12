@@ -86,7 +86,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
                 Aplikasi Pemantauan &amp; Presensi Kelas Ibu Hamil
               </p>
               <p className="text-[11px] text-gray-600 mt-0.5">
-                Puskesmas Kuranji · Khusus Bidan &amp; Petugas Kesehatan
+                Puskesmas Kuranji · Khusus Petugas Kesehatan dan Kader
               </p>
             </div>
           </div>
