@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Camera } from 'lucide-react';
-import logoImg from '../assets/logo.jpg';
+import logoImg from '../assets/logo-ingek-bundo.jpeg';
 
 interface LogoBadgeProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
@@ -58,7 +58,7 @@ export const LogoBadge: React.FC<LogoBadgeProps> = ({
   };
 
   const { container } = sizeMap[size];
-  const activeLogoSrc = customLogo || logoImg;
+  const activeLogoSrc = logoImg;
 
   return (
     <div className={`flex items-center gap-3 ${className}`}>
@@ -71,7 +71,7 @@ export const LogoBadge: React.FC<LogoBadgeProps> = ({
         className={`relative ${container} rounded-full flex-shrink-0 shadow-md ring-3 ring-[#EC377E]/80 overflow-hidden bg-gradient-to-b from-[#FFF0F5] to-[#FCE4EC] group ${
           allowUpload ? 'cursor-pointer' : ''
         }`}
-        title={allowUpload ? 'Klik untuk memasang/mengganti file logo asli (logo ingek bundo.jpeg)' : 'Logo Resmi INGEK BUNDO Puskesmas Kuranji'}
+        title="Logo Resmi INGEK BUNDO Puskesmas Kuranji"
       >
         {!imageError ? (
           <img
